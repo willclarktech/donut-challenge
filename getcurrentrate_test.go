@@ -1,9 +1,7 @@
 package donutchallenge
 
 import (
-	"io/ioutil"
 	"net/http"
-	"strings"
 	"testing"
 )
 
@@ -20,7 +18,7 @@ func TestGetRateFromResponseReturnsPrice(t *testing.T) {
 	for _, test := range table {
 		res := &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(strings.NewReader(test.Body)),
+			Body:       createBodyFromString(test.Body),
 		}
 		price, err := getRateFromResponse(res)
 

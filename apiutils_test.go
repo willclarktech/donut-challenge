@@ -1,10 +1,8 @@
 package donutchallenge
 
 import (
-	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
 	"testing"
 )
 
@@ -60,7 +58,7 @@ func TestGetJSONDataFromResponseReturnsUnmarshalledJSON(t *testing.T) {
 	for _, test := range table {
 		res := &http.Response{
 			StatusCode: http.StatusOK,
-			Body:       ioutil.NopCloser(strings.NewReader(test.Body)),
+			Body:       createBodyFromString(test.Body),
 		}
 		var data JSONTestType
 		err := getJSONDataFromResponse(res, &data)
@@ -88,7 +86,7 @@ func TestHandleNon200ReturnsHelpfulError(t *testing.T) {
 	for _, test := range table {
 		res := &http.Response{
 			StatusCode: test.StatusCode,
-			Body:       ioutil.NopCloser(strings.NewReader(test.Body)),
+			Body:       createBodyFromString(test.Body),
 		}
 		err := handleNon200(res)
 		if err == nil || err.Error() != test.ErrorMessage {
